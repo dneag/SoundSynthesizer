@@ -10,9 +10,15 @@
 // dTime represents the time passed since the start of the program
 double makeNoise(double dTime) {
 	
-	// amplitude (0.5) times sin of frequency (440) times dTime 
+	// amplitude (0.5) times sin of frequency (440 - an A) times dTime 
 	// the 2 * pi converts the hertz to angular velocity (required because sin doesn't 'understand' hertz)
-	return 0.5 * sin(440.0 * 2. * 3.14159 * dTime);
+	double dOutput = 1.0 * sin(440. * 2. * 3.14159 * dTime);
+
+	// makes a square wave
+	if (dOutput > 0.)
+		return 0.008;
+	else
+		return -0.008;
 }
 
 int main()
@@ -26,6 +32,14 @@ int main()
 
 	// create sound machine
 	olcNoiseMaker<short> sound(devices[0], 44100, 1, 8, 512);
+
+	// link noise function with sound machine
+	sound.SetUserFunction(makeNoise);
+
+	while (true) {
+
+
+	}
 
 	return 0;
 } 
